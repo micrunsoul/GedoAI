@@ -1,0 +1,24 @@
+{
+  "name": "@gedo-ai/backend-api",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.mjs",
+    "start": "node src/server.mjs",
+    "migrate": "node ../../scripts/migrate-json-to-postgres.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.11.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
+
+
+
+
+
+
+

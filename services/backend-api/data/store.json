@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "73eed72e-0b48-437a-9879-b604ceb0080d",
+      "email": "demo@gedo.ai",
+      "password_hash": {
+        "algo": "scrypt",
+        "salt": "HKQlqwj+VRKnAacYHQ8BKw==",
+        "hash": "rxJ9iTNy7GOze/IEnLUvzBvWPK6Eklo0u3Y0Z+gnPco="
+      },
+      "created_at": "2025-12-22T09:02:36.005Z"
+    }
+  ],
+  "memoryItems": [],
+  "goals": [],
+  "tasks": [],
+  "adjustments": []
+}
