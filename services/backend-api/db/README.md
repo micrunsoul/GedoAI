@@ -55,7 +55,7 @@ psql -h localhost -U postgres -d gedoai -f schema.sql
 
 ## 核心表说明
 
-### 1. memories (智忆库)
+### 1. memories (智忆)
 
 存储用户的长期记忆，支持：
 - 多种类型：重要信息、个人特质、关键事件、日期提醒
@@ -126,6 +126,7 @@ LIMIT 10;
 1. 运行 `schema.sql` 初始化
 2. 配置 `DATABASE_URL` 环境变量
 3. 后端自动检测并使用 Postgres
+
 
 
 

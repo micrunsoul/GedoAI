@@ -95,7 +95,7 @@ export const MemoryConfirmModal = ({
 
           {/* 提示 */}
           <p className="text-sm text-slate-500">
-            这条记忆来自系统自动识别，确认后将存入你的智忆库。
+            这条记忆来自系统自动识别，确认后将存入你的智忆。
           </p>
         </div>
 
@@ -123,6 +123,7 @@ export const MemoryConfirmModal = ({
     </motion.div>
   );
 };
+
 
 
 

@@ -9,10 +9,245 @@
         "hash": "rxJ9iTNy7GOze/IEnLUvzBvWPK6Eklo0u3Y0Z+gnPco="
       },
       "created_at": "2025-12-22T09:02:36.005Z"
+    },
+    {
+      "id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "email": "demo@example.com",
+      "password_hash": {
+        "algo": "scrypt",
+        "salt": "wWe5Xo/qkq7J5kWnb9n3Fg==",
+        "hash": "vTzUzVGlL4KQWsMNuVmFwF1+ntVsGNG2MvZ7VHclG1o="
+      },
+      "created_at": "2025-12-26T08:58:49.037Z"
     }
   ],
-  "memoryItems": [],
-  "goals": [],
-  "tasks": [],
+  "memoryItems": [
+    {
+      "id": "fd6cdb8d-c491-43fe-9736-28cbda116a0a",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "important_info",
+      "content_raw": "sdaasdsa",
+      "content_struct": {
+        "summary": "sdaasdsa"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:33.704Z"
+    },
+    {
+      "id": "68c4cb2c-40ef-4672-b049-879d05d0195c",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "important_info",
+      "content_raw": "asdada",
+      "content_struct": {
+        "summary": "asdada"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:35.646Z"
+    },
+    {
+      "id": "ae3ff181-04aa-4fb1-9719-b14385dbd9d3",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "important_info",
+      "content_raw": "1231221",
+      "content_struct": {
+        "summary": "1231221"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:46.467Z"
+    },
+    {
+      "id": "5ae63ee8-0370-4ac1-83b4-ba737d029a3d",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "personal_trait",
+      "content_raw": "1231",
+      "content_struct": {
+        "summary": "1231"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:50.377Z"
+    },
+    {
+      "id": "f6bde77f-440c-4f56-ba45-08ea95871b24",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "personal_trait",
+      "content_raw": "1231",
+      "content_struct": {
+        "summary": "1231"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:52.066Z"
+    },
+    {
+      "id": "65180461-5420-4ea0-ab6c-b86231369524",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "key_event",
+      "content_raw": "123131",
+      "content_struct": {
+        "summary": "123131"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:55.389Z"
+    },
+    {
+      "id": "77eb2e2e-2ec9-404a-84bc-a538ee733083",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "type": "key_event",
+      "content_raw": "21321",
+      "content_struct": {
+        "summary": "21321"
+      },
+      "tags": [],
+      "source": "text",
+      "created_at": "2025-12-26T09:20:56.760Z"
+    }
+  ],
+  "goals": [
+    {
+      "id": "1ce0673f-2a93-4afd-bd29-c681551dd327",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "111",
+      "description": "基于你的输入\"111\"生成的目标",
+      "life_wheel_dimension": "health",
+      "status": "draft",
+      "progress": 0,
+      "created_at": "2025-12-26T08:59:33.764Z",
+      "updated_at": "2025-12-26T08:59:33.764Z"
+    },
+    {
+      "id": "131fb994-10f2-427b-977c-7f75b9a1f539",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "111",
+      "description": "",
+      "life_wheel_dimension": "growth",
+      "status": "draft",
+      "progress": 0,
+      "created_at": "2025-12-26T08:59:33.819Z",
+      "updated_at": "2025-12-26T08:59:33.819Z"
+    },
+    {
+      "id": "1672dd4d-e2ef-4a41-9f7a-d3d89d1d9b68",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "87788",
+      "description": "基于你的输入\"87788\"生成的目标",
+      "life_wheel_dimension": "finance",
+      "status": "draft",
+      "progress": 0,
+      "created_at": "2025-12-26T09:23:21.424Z",
+      "updated_at": "2025-12-26T09:23:21.424Z"
+    },
+    {
+      "id": "ae127f25-6936-4ae8-8677-82e012d224ca",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "87788",
+      "description": "",
+      "life_wheel_dimension": "growth",
+      "status": "draft",
+      "progress": 0,
+      "created_at": "2025-12-26T09:23:21.439Z",
+      "updated_at": "2025-12-26T09:23:21.439Z"
+    },
+    {
+      "id": "5b333c15-c33d-4247-a217-4cb28b36764a",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "去weqwq",
+      "description": "基于你的输入\"去weqwq\"生成的目标",
+      "life_wheel_dimension": "finance",
+      "status": "draft",
+      "progress": 0,
+      "created_at": "2025-12-26T10:23:14.270Z",
+      "updated_at": "2025-12-26T10:23:14.270Z"
+    },
+    {
+      "id": "a3d9e753-6c88-41ea-b5d7-6f0adc6290e8",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "去weqwq",
+      "description": "",
+      "life_wheel_dimension": "growth",
+      "status": "draft",
+      "progress": 0,
+      "created_at": "2025-12-26T10:23:14.327Z",
+      "updated_at": "2025-12-26T10:23:14.327Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "5c698648-3521-4d76-bab1-4d03bc21fcb4",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "拆解目标：111",
+      "status": "done",
+      "due_date": null,
+      "created_at": "2025-12-26T08:59:33.819Z"
+    },
+    {
+      "id": "a2176339-c730-4df6-938d-1c0975efe87d",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "收集资料：为「111」准备资源清单",
+      "status": "done",
+      "due_date": null,
+      "created_at": "2025-12-26T08:59:33.819Z"
+    },
+    {
+      "id": "10a998fd-e663-4bac-b72b-43448766e26c",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "执行第一步：完成 1 个最小行动",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T08:59:33.819Z"
+    },
+    {
+      "id": "784b380d-6400-4187-adb9-183c9b3455a5",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "拆解目标：87788",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T09:23:21.439Z"
+    },
+    {
+      "id": "8b0988fb-3085-413d-9199-9a9ac31669b7",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "收集资料：为「87788」准备资源清单",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T09:23:21.439Z"
+    },
+    {
+      "id": "c3b1a0f6-8277-431f-91c7-ebfc7c6c688a",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "执行第一步：完成 1 个最小行动",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T09:23:21.439Z"
+    },
+    {
+      "id": "1bbe90c3-474f-427e-9605-ee3a707cce8b",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "拆解目标：去weqwq",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T10:23:14.328Z"
+    },
+    {
+      "id": "a5934ea8-0e77-4b0f-8fbb-147f1a62430a",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "收集资料：为「去weqwq」准备资源清单",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T10:23:14.328Z"
+    },
+    {
+      "id": "f28347af-f0e4-481e-8a6f-4bc4fd048cb0",
+      "user_id": "0733cc56-1cbe-43c9-9600-1d040f32c9fa",
+      "title": "执行第一步：完成 1 个最小行动",
+      "status": "todo",
+      "due_date": null,
+      "created_at": "2025-12-26T10:23:14.328Z"
+    }
+  ],
   "adjustments": []
 }

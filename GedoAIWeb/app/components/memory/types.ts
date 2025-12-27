@@ -1,4 +1,4 @@
-// 智忆库数据类型
+// 智忆数据类型（记忆 → 能力证据链）
 
 export type MemoryType = 'important_info' | 'personal_trait' | 'key_event' | 'date_reminder';
 export type MemorySource = 'text' | 'voice' | 'image' | 'passive_event';
@@ -52,6 +52,7 @@ export const SYSTEM_TAG_LABELS: Record<SystemTag, { label: string; color: string
   goal_related: { label: '目标关联', color: '#8b5cf6' },
   relationship: { label: '人际管理', color: '#ec4899' },
 };
+
 
 
 

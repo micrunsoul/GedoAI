@@ -7,6 +7,21 @@ import * as PlannerService from './services/planner.service.mjs';
 
 const store = Store();
 
+// 初始化默认测试账号（如果不存在）
+function ensureDefaultUser() {
+  const defaultEmail = 'demo@example.com';
+  const defaultPassword = 'demo123';
+  const existingUser = store.getUserByEmail(defaultEmail);
+  if (!existingUser) {
+    const passwordHash = hashPassword(defaultPassword);
+    store.createUser({ email: defaultEmail, password_hash: passwordHash });
+    console.log(`[backend-api] 已创建默认测试账号: ${defaultEmail} / ${defaultPassword}`);
+  }
+}
+
+// 启动时确保默认账号存在
+ensureDefaultUser();
+
 // 是否启用 LLM（可通过环境变量控制）
 const ENABLE_LLM = process.env.ENABLE_LLM !== 'false';
 
@@ -420,8 +435,177 @@ const server = http.createServer(async (req, res) => {
     return sendJson(res, 200, { success: true }, corsHeaders());
   }
 
+  // Chat (数字人对话)
+  if (method === 'POST' && pathname === '/v1/chat') {
+    const user = requireUser(req, res);
+    if (!user) return;
+    const body = await readJsonBody(req);
+    if (!body || body.__parse_error) return sendJson(res, 400, { error: 'bad_json' }, corsHeaders());
+    
+    const message = String(body.message || '').trim();
+    if (!message) return sendJson(res, 400, { error: 'invalid_input' }, corsHeaders());
+    
+    const context = body.context || {};
+    
+    try {
+      // 获取用户上下文数据
+      const userMemories = store.searchMemory(user.id, '').slice(0, 5);
+      const userGoals = store.listGoals(user.id).filter(g => g.status === 'active').slice(0, 5);
+      const todayTasks = store.listTodayTasks(user.id);
+      
+      // 构建对话上下文
+      const chatContext = {
+        user: { email: user.email },
+        recentMemories: userMemories.map(m => ({
+          id: m.id,
+          type: m.type,
+          summary: m.content_raw?.slice(0, 100) || '',
+          createdAt: m.created_at,
+        })),
+        activeGoals: userGoals.map(g => ({
+          id: g.id,
+          title: g.title,
+          progress: g.progress || 0,
+          dimension: g.life_wheel_dimension,
+        })),
+        todayTasks: todayTasks.map(t => ({
+          id: t.id,
+          title: t.title,
+          status: t.status,
+        })),
+        todayCompleted: context.todayCompleted || todayTasks.filter(t => t.status === 'done').length,
+        todayTotal: context.todayTotal || todayTasks.length,
+        streakDays: context.streakDays || 0,
+      };
+      
+      // 调用 LLM 生成回复
+      let reply = '';
+      let mood = 'neutral';
+      let functionCall = null;
+      let quickActions = null;
+      
+      if (ENABLE_LLM) {
+        try {
+          const llmResponse = await PlannerService.generateChatResponse(message, chatContext);
+          reply = llmResponse.reply || '';
+          mood = llmResponse.mood || 'neutral';
+          functionCall = llmResponse.functionCall;
+          quickActions = llmResponse.quickActions;
+          
+          // 执行 function call
+          if (functionCall) {
+            switch (functionCall.name) {
+              case 'capture_memory':
+                const memoryItem = store.createMemoryItem(user.id, {
+                  type: functionCall.arguments.type || 'important_info',
+                  content_raw: functionCall.arguments.content,
+                  tags: functionCall.arguments.tags || [],
+                  source: 'chat',
+                  content_struct: { summary: functionCall.arguments.content?.slice(0, 80) },
+                });
+                functionCall.result = { success: true, memoryId: memoryItem.id };
+                break;
+              case 'complete_task':
+                const taskId = functionCall.arguments.taskId;
+                if (taskId) {
+                  const task = store.updateTaskStatus(user.id, taskId, 'done');
+                  functionCall.result = { success: !!task };
+                }
+                break;
+            }
+          }
+        } catch (error) {
+          console.error('[API] Chat LLM error:', error);
+          // 降级到本地响应
+        }
+      }
+      
+      // 如果 LLM 失败或未启用，使用本地规则生成回复
+      if (!reply) {
+        const result = generateLocalChatResponse(message, chatContext);
+        reply = result.reply;
+        mood = result.mood;
+        quickActions = result.quickActions;
+      }
+      
+      return sendJson(res, 200, { reply, mood, functionCall, quickActions }, corsHeaders());
+    } catch (error) {
+      console.error('[API] Chat error:', error);
+      return sendJson(res, 500, { error: 'chat_failed' }, corsHeaders());
+    }
+  }
+
   return sendJson(res, 404, { error: 'not_found' }, corsHeaders());
 });
+
+// 本地规则生成对话回复（LLM 降级）
+function generateLocalChatResponse(message, context) {
+  const lowerMsg = message.toLowerCase();
+  let reply = '';
+  let mood = 'neutral';
+  let quickActions = null;
+  
+  const completedRatio = context.todayTotal > 0 
+    ? context.todayCompleted / context.todayTotal 
+    : 0;
+  
+  // 记忆相关
+  if (lowerMsg.includes('记住') || lowerMsg.includes('记录') || lowerMsg.includes('学会') || lowerMsg.includes('学到')) {
+    reply = `好的，我帮你记下了 📝\n\n「${message}」\n\n要给它打个标签吗？`;
+    mood = 'happy';
+    quickActions = [
+      { id: 'save', label: '保存到智忆', type: 'confirm' },
+      { id: 'skip', label: '暂不保存', type: 'cancel' },
+    ];
+  }
+  // 目标相关
+  else if (lowerMsg.includes('目标') || lowerMsg.includes('计划') || lowerMsg.includes('想要') || lowerMsg.includes('打算')) {
+    reply = `听起来是个不错的想法！🎯\n\n让我帮你拆解成可执行的计划：\n1. 首先，这个目标的截止时间是？\n2. 你觉得最大的挑战是什么？`;
+    mood = 'thinking';
+    quickActions = [
+      { id: 'create', label: '创建目标', type: 'confirm' },
+      { id: 'later', label: '稍后再说', type: 'cancel' },
+    ];
+  }
+  // 完成任务
+  else if (lowerMsg.includes('完成') || lowerMsg.includes('做完') || lowerMsg.includes('搞定')) {
+    const newCompleted = context.todayCompleted + 1;
+    reply = `太棒了！✅ 又完成一项任务！\n\n今日进度：${newCompleted}/${context.todayTotal}\n\n继续加油！`;
+    mood = 'excited';
+  }
+  // 情绪相关
+  else if (lowerMsg.includes('累') || lowerMsg.includes('烦') || lowerMsg.includes('压力') || lowerMsg.includes('迷茫')) {
+    reply = `我理解你的感受 💙\n\n有时候放慢脚步也是一种进步。要不要：\n• 调整一下今天的任务优先级？\n• 或者就聊聊，我在这里陪你`;
+    mood = 'encouraging';
+  }
+  // 问候
+  else if (lowerMsg.includes('你好') || lowerMsg.includes('嗨') || lowerMsg.includes('hi') || lowerMsg.includes('hello')) {
+    reply = `嗨！很高兴见到你 😊\n\n今天想做点什么？`;
+    mood = 'happy';
+  }
+  // 查看进度
+  else if (lowerMsg.includes('进度') || lowerMsg.includes('怎么样') || lowerMsg.includes('情况')) {
+    const streakText = context.streakDays > 0 ? `，已连续打卡 ${context.streakDays} 天 🔥` : '';
+    reply = `📊 今日进度：${context.todayCompleted}/${context.todayTotal}${streakText}\n\n`;
+    if (completedRatio >= 1) {
+      reply += '太棒了，今天任务全部完成！🎉';
+      mood = 'excited';
+    } else if (completedRatio >= 0.5) {
+      reply += '进展不错，继续加油！💪';
+      mood = 'happy';
+    } else {
+      reply += '还有一些任务待完成，需要帮你调整优先级吗？';
+      mood = 'neutral';
+    }
+  }
+  // 默认响应
+  else {
+    reply = `收到！${message.length > 20 ? '这是个有意思的话题~' : ''}\n\n我可以帮你记录想法、规划目标或打卡任务，你想做什么呢？`;
+    mood = 'neutral';
+  }
+  
+  return { reply, mood, quickActions };
+}
 
 server.listen(PORT, () => {
   // eslint-disable-next-line no-console

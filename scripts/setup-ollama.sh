@@ -68,3 +68,5 @@ echo "测试命令:"
 echo "  ollama run qwen2.5:7b-instruct '你好'"
 echo ""
 
+
+

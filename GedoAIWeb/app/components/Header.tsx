@@ -29,14 +29,17 @@ export const Header = () => {
 
   const navLinks = isApp
     ? [
-        { name: '生命之树', href: '/app/tree' },
-        { name: '智忆库', href: '/app/memory' },
-        { name: '目标', href: '/app/goals' },
+        { name: '智伴', href: '/app/avatar' },
+        { name: '智忆', href: '/app/memory' },
+        { name: '智引', href: '/app/goals' },
         { name: '今日', href: '/app/today' },
+        { name: '洞察', href: '/app/insights' },
       ]
     : [
         { name: t.nav.concept, href: '#concept' },
         { name: t.nav.features, href: '#features' },
+        { name: '智伴', href: '#avatar' },
+        { name: '开源', href: '#opensource' },
       ];
 
   return (

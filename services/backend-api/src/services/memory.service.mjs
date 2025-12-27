@@ -1,5 +1,5 @@
 /**
- * 智忆库服务 - 混合检索实现
+ * 智忆服务 - 混合检索实现（记忆 → 能力证据链）
  * 
  * 结合结构化查询和向量检索，通过 Rerank 精排返回最相关结果
  */
@@ -420,6 +420,7 @@ ${memories.slice(0, 5).map(m => `- ${m.content_raw}`).join('\n')}
 }
 
 export default MemoryService;
+
 
 
 

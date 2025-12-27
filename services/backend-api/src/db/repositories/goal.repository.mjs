@@ -126,3 +126,5 @@ export class GoalRepository extends BaseRepository {
 
 export default GoalRepository;
 
+
+

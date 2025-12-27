@@ -7,7 +7,7 @@
 | 任务 | 状态 | 关键文件 |
 |------|------|----------|
 | 认证系统 | ✅ | `GedoAIWeb/app/auth/login/page.tsx`, `GedoAIWeb/app/contexts/AuthContext.tsx` |
-| 智忆库联调 | ✅ | `GedoAIWeb/app/app/memory/page.tsx` |
+| 智忆联调 | ✅ | `GedoAIWeb/app/app/memory/page.tsx` |
 | 智引联调 | ✅ | `GedoAIWeb/app/app/goals/page.tsx` |
 | 今日任务联调 | ✅ | `GedoAIWeb/app/app/today/page.tsx` |
 | 生命之树联调 | ✅ | `GedoAIWeb/app/app/tree/page.tsx` |
@@ -177,4 +177,5 @@ cd services/backend-api && npm run migrate
 # 前端: Vercel 自动部署
 # 后端: Railway 自动部署
 ```
+
 

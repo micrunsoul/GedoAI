@@ -7,11 +7,11 @@ import { useAuth } from '@/app/contexts/AuthContext';
 
 // 应用内导航项
 const navItems = [
-  { href: '/app/tree', label: '生命之树', icon: '🌳' },
-  { href: '/app/memory', label: '智忆库', icon: '🧠' },
+  { href: '/app/avatar', label: '智伴', icon: '🤖' },
+  { href: '/app/memory', label: '智忆', icon: '🧠' },
   { href: '/app/goals', label: '智引', icon: '🎯' },
-  { href: '/app/today', label: '今日行动', icon: '✅' },
-  { href: '/app/insights', label: '复盘沉淀', icon: '📊' },
+  { href: '/app/today', label: '今日', icon: '✅' },
+  { href: '/app/insights', label: '洞察', icon: '📊' },
 ];
 
 export default function AppLayout({
@@ -52,7 +52,7 @@ export default function AppLayout({
       <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/app/tree" className="flex items-center gap-2">
+          <Link href="/app/avatar" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 22c0-8-8-10-8-16a8 8 0 1 1 16 0c0 6-8 8-8 16z" />
@@ -113,4 +113,5 @@ export default function AppLayout({
     </div>
   );
 }
+
 

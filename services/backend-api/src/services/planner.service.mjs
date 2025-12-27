@@ -323,10 +323,80 @@ export async function checkLifeWheelBalance(goals, newGoalDimension) {
   };
 }
 
+/**
+ * 数字人对话响应生成
+ * @param {string} message - 用户消息
+ * @param {Object} context - 对话上下文（记忆、目标、任务等）
+ * @returns {Promise<{reply: string, mood: string, functionCall?: Object, quickActions?: Array}>}
+ */
+export async function generateChatResponse(message, context = {}) {
+  const systemPrompt = `你是用户的数字分身「智伴」，既是他们的镜像，也是成长伙伴。
+
+## 用户当前状态
+- 今日任务：已完成 ${context.todayCompleted || 0}/${context.todayTotal || 0}
+- 连续打卡：${context.streakDays || 0} 天
+${context.activeGoals?.length > 0 ? `- 进行中目标：${context.activeGoals.map(g => g.title).join('、')}` : ''}
+
+${context.recentMemories?.length > 0 ? `## 最近记忆\n${context.recentMemories.map(m => `- ${m.summary}`).join('\n')}` : ''}
+
+## 你的能力
+你可以通过 function call 帮用户：
+1. capture_memory - 记录想法/经历到智忆
+2. create_goal - 创建新目标
+3. complete_task - 打卡完成任务
+4. search_memory - 搜索历史记忆
+
+## 交互原则
+1. 语气亲切温暖，像老朋友
+2. 主动关联用户的记忆和目标，体现"懂你"
+3. 适时给予鼓励和建议，但不说教
+4. 回复简洁，通常 2-4 句话即可
+5. 如果用户想记录/规划/打卡，返回对应的 function_call
+
+返回 JSON 格式：
+{
+  "reply": "回复内容",
+  "mood": "你此刻的情绪(happy/excited/thinking/encouraging/neutral)",
+  "function_call": {
+    "name": "函数名（可选）",
+    "arguments": { "参数": "值" }
+  },
+  "quick_actions": [
+    { "id": "action_id", "label": "按钮文字", "type": "confirm/cancel" }
+  ]
+}`;
+
+  const userPrompt = `用户说：${message}
+
+请用 JSON 格式回复：`;
+
+  try {
+    const response = await llm.chat([
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ], { temperature: 0.7, json: true, maxTokens: 1024 });
+
+    const parsed = JSON.parse(response.content);
+    
+    return {
+      reply: parsed.reply || '',
+      mood: parsed.mood || 'neutral',
+      functionCall: parsed.function_call,
+      quickActions: parsed.quick_actions,
+    };
+  } catch (error) {
+    console.error('[PlannerService] generateChatResponse error:', error);
+    // 返回 null 让调用方使用本地规则
+    return null;
+  }
+}
+
 export default {
   generateClarifyQuestions,
   generateSmartPlan,
   generateAdjustmentSuggestion,
   checkLifeWheelBalance,
+  generateChatResponse,
 };
+
 

@@ -157,9 +157,9 @@ export default function MemoryPage() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* 页面标题 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">智忆库</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">智忆</h1>
           <p className="text-slate-400">
-            记录你的经验、想法、重要信息，让 AI 帮你整理和关联
+            记录你的经验、想法、重要信息，沉淀为能力证据，让智引更懂你
           </p>
         </div>
 

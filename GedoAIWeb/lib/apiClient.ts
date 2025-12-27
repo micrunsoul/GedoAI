@@ -18,12 +18,29 @@ export class ApiClient {
     const token = this.getToken?.();
     if (token) headers.set('authorization', `Bearer ${token}`);
 
-    const res = await fetch(`${this.baseUrl}${path}`, { ...init, headers });
-    if (!res.ok) {
-      const text = await res.text().catch(() => '');
-      throw new Error(`API ${res.status}: ${text || res.statusText}`);
+    try {
+      const res = await fetch(`${this.baseUrl}${path}`, { ...init, headers });
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        let errorMessage = `API ${res.status}: ${text || res.statusText}`;
+        try {
+          const errorJson = JSON.parse(text);
+          if (errorJson.error) {
+            errorMessage = errorJson.error;
+          }
+        } catch {
+          // 忽略 JSON 解析错误，使用原始错误消息
+        }
+        throw new Error(errorMessage);
+      }
+      return (await res.json()) as T;
+    } catch (error) {
+      // 如果是网络错误，提供更友好的提示
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Failed to fetch - 无法连接到服务器');
+      }
+      throw error;
     }
-    return (await res.json()) as T;
   }
 
   signup(email: string, password: string) {
@@ -91,6 +108,21 @@ export class ApiClient {
 
   deleteGoal(goalId: string) {
     return this.request(`/v1/goals/${goalId}`, { method: 'DELETE' });
+  }
+
+  // Chat API (数字人对话)
+  chat(input: { message: string; context?: Record<string, any> }) {
+    return this.request<{ 
+      reply: string; 
+      mood?: string;
+      functionCall?: { name: string; arguments: Record<string, any>; result?: any };
+      quickActions?: Array<{ id: string; label: string; type: string }>;
+    }>('/v1/chat', { method: 'POST', body: JSON.stringify(input) });
+  }
+
+  // Today Tasks (获取今日任务)
+  getTodayTasks() {
+    return this.request<{ tasks: any[] }>('/v1/tasks/today');
   }
 }
 

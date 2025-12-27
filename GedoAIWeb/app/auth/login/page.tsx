@@ -9,8 +9,8 @@ import { useAuth } from '@/app/contexts/AuthContext';
 export default function LoginPage() {
   const router = useRouter();
   const { login, isLoading: authLoading } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('demo@example.com');
+  const [password, setPassword] = useState('demo123');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,7 +23,22 @@ export default function LoginPage() {
       await login(email, password);
       router.push('/app/tree');
     } catch (err) {
-      setError(err instanceof Error ? err.message : '登录失败，请检查邮箱和密码');
+      let errorMessage = '登录失败，请检查邮箱和密码';
+      
+      if (err instanceof Error) {
+        const message = err.message.toLowerCase();
+        if (message.includes('failed to fetch') || message.includes('networkerror') || message.includes('network error')) {
+          errorMessage = '无法连接到服务器，请确保后端服务已启动 (http://localhost:8787)';
+        } else if (message.includes('401') || message.includes('bad_credentials')) {
+          errorMessage = '邮箱或密码错误';
+        } else if (message.includes('400')) {
+          errorMessage = '请求参数错误，请检查输入';
+        } else {
+          errorMessage = err.message || errorMessage;
+        }
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -134,6 +149,19 @@ export default function LoginPage() {
               立即注册
             </Link>
           </div>
+
+          {/* 默认测试账号提示 */}
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <div className="text-center space-y-2">
+              <p className="text-sm text-white/40 mb-2">测试账号（已自动填充）</p>
+              <p className="text-xs text-white/30 font-mono">
+                邮箱: demo@example.com | 密码: demo123
+              </p>
+              <p className="text-xs text-yellow-400/60 mt-3">
+                💡 提示：如遇到连接错误，请确保后端服务已启动 (端口 8787)
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* 返回首页 */}
@@ -146,4 +174,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 

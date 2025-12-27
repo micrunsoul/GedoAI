@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE INDEX idx_users_email ON users(email);
 
 -- ============================================================================
--- 2. 智忆库 (Memory)
+-- 2. 智忆 (Memory → Capability Evidence)
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS memories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -294,7 +294,7 @@ CREATE INDEX idx_adjustments_user ON adjustments(user_id);
 CREATE INDEX idx_adjustments_task ON adjustments(original_task_id);
 
 -- ============================================================================
--- 9. 复盘记忆 (ReflectionMemory - 反馈总结写回智忆库)
+-- 9. 复盘记忆 (ReflectionMemory - 反馈总结写回智忆)
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS reflections (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS reflections (
   -- AI 生成的洞察
   ai_insights JSONB,
   
-  -- 关联的记忆 ID (写回智忆库后生成)
+  -- 关联的记忆 ID (写回智忆后生成)
   memory_id UUID REFERENCES memories(id) ON DELETE SET NULL,
   
   -- 时间范围
@@ -427,14 +427,14 @@ SELECT
 FROM users u;
 
 COMMENT ON TABLE users IS '用户表';
-COMMENT ON TABLE memories IS '智忆库 - 个人长期记忆存储';
+COMMENT ON TABLE memories IS '智忆 - 个人长期记忆存储，沉淀为能力证据';
 COMMENT ON TABLE skills IS '技能节点 - 从记忆抽取的技能';
 COMMENT ON TABLE goals IS '目标 - SMART 目标定义';
 COMMENT ON TABLE plan_nodes IS '计划节点 - 目标的层级分解';
 COMMENT ON TABLE tasks IS '任务 - 日常行动项';
 COMMENT ON TABLE check_ins IS '打卡记录 - 任务完成状态';
 COMMENT ON TABLE adjustments IS '调整记录 - 计划动态调整';
-COMMENT ON TABLE reflections IS '复盘记忆 - 定期总结写回智忆库';
+COMMENT ON TABLE reflections IS '复盘记忆 - 定期总结写回智忆，增强能力根系';
 COMMENT ON TABLE life_wheel_weights IS '生命之花 - 8维度权重配置';
 
 

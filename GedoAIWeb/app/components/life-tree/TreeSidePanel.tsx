@@ -42,7 +42,7 @@ export const TreeSidePanel = ({ type, data, onClose }: TreeSidePanelProps) => {
   );
 };
 
-// 技能详情面板
+// 能力详情面板（根系节点）
 const SkillPanel = ({ skill }: { skill: SkillNode }) => {
   const color = CATEGORY_COLORS[skill.category];
   
@@ -63,10 +63,10 @@ const SkillPanel = ({ skill }: { skill: SkillNode }) => {
         </div>
       </div>
 
-      {/* 熟练度进度条 */}
+      {/* 置信度/熟练度进度条 */}
       <div>
         <div className="flex justify-between text-sm mb-2">
-          <span className="text-slate-400">熟练度</span>
+          <span className="text-slate-400">能力置信度</span>
           <span className="text-white">{Math.round(skill.proficiencyLevel * 100)}%</span>
         </div>
         <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -84,20 +84,21 @@ const SkillPanel = ({ skill }: { skill: SkillNode }) => {
       <div className="bg-slate-800/50 rounded-lg p-4">
         <div className="flex items-center gap-2 text-slate-300">
           <Sparkles size={16} />
-          <span>相关记忆证据</span>
+          <span>智忆证据</span>
         </div>
         <div className="text-2xl font-bold text-white mt-2">
-          {skill.evidenceCount} 条
+          {skill.evidenceCount} 条记忆
         </div>
+        <p className="text-xs text-slate-500 mt-1">来自你的经历与复盘</p>
       </div>
 
       {/* 操作按钮 */}
       <div className="space-y-2">
         <button className="w-full py-2 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
-          查看相关记忆
+          查看智忆证据
         </button>
         <button className="w-full py-2 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
-          关联到目标
+          关联到智引目标
         </button>
       </div>
     </div>
@@ -175,7 +176,7 @@ const GoalPanel = ({ goal }: { goal: GoalFlower }) => {
 
       {/* 关联任务 */}
       <div>
-        <h4 className="text-sm font-medium text-slate-400 mb-3">关联任务</h4>
+        <h4 className="text-sm font-medium text-slate-400 mb-3">今日行动</h4>
         <div className="space-y-2">
           {goal.tasks.slice(0, 5).map((task) => (
             <div
@@ -195,6 +196,13 @@ const GoalPanel = ({ goal }: { goal: GoalFlower }) => {
         </div>
       </div>
 
+      {/* 能力关联提示 */}
+      <div className="bg-slate-800/30 rounded-lg p-3 border border-slate-700/50">
+        <p className="text-xs text-slate-400">
+          💡 完成此目标将强化相关能力，成果会沉淀为智忆证据
+        </p>
+      </div>
+
       {/* 操作按钮 */}
       <div className="space-y-2">
         <button
@@ -204,7 +212,7 @@ const GoalPanel = ({ goal }: { goal: GoalFlower }) => {
           查看详情
         </button>
         <button className="w-full py-2 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
-          调整计划
+          智引调整
         </button>
       </div>
     </div>
@@ -267,6 +275,13 @@ const TaskPanel = ({ task }: { task: TaskLeaf }) => {
         </span>
       </div>
 
+      {/* 能力训练提示 */}
+      <div className="bg-slate-800/30 rounded-lg p-3 border border-slate-700/50">
+        <p className="text-xs text-slate-400">
+          🌱 完成任务是能力训练的最小单元，会为你的根系增加证据
+        </p>
+      </div>
+
       {/* 操作按钮 */}
       <div className="space-y-2">
         {!isCompleted && (
@@ -278,12 +293,13 @@ const TaskPanel = ({ task }: { task: TaskLeaf }) => {
           {isCompleted ? '查看打卡记录' : '暂时跳过'}
         </button>
         <button className="w-full py-2 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors">
-          调整任务
+          智引调整
         </button>
       </div>
     </div>
   );
 };
+
 
 
 
